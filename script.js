@@ -59,7 +59,7 @@ function escapeHTML(str) {
 }
 
 function escapeAttr(str) {
-    return str.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+    return str.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
 // ---- Scroll-reveal (IntersectionObserver) ----
