@@ -20,22 +20,49 @@ async function fetchRepos() {
 
         filteredRepos.forEach(repo => {
             const cardWrapper = document.createElement('div');
-            cardWrapper.className = `col-md-6 col-lg-4 animate__animated animate__fadeInUp`;
+            cardWrapper.className = `col-md-6 col-lg-4 custom-fade-in-up`;
             cardWrapper.style.animationDelay = `${delay}s`;
             delay += 0.1; // Stagger animation
 
-            cardWrapper.innerHTML = `
-                <div class="glass-card h-100 p-4 d-flex flex-column position-relative z-1">
-                    <h3 class="h4 mb-3" style="color: var(--accent);">${repo.name}</h3>
-                    <p class="opacity-75 flex-grow-1" style="font-size: 0.95rem;">${repo.description || 'No description available.'}</p>
-                    <div class="repo-stats d-flex gap-3 opacity-50 small mt-auto pt-3">
-                        <span>⭐ ${repo.stargazers_count}</span>
-                        <span>🍴 ${repo.forks_count}</span>
-                        <span>${repo.language || 'Code'}</span>
-                    </div>
-                    <a href="${repo.html_url}" target="_blank" class="text-decoration-none mt-3 fw-bold" style="color: var(--secondary); font-size: 0.85rem; text-transform: uppercase;">View Source →</a>
-                </div>
+            const card = document.createElement('div');
+            card.className = 'glass-card h-100 p-4 d-flex flex-column position-relative z-1';
+
+            const title = document.createElement('h3');
+            title.className = 'h4 mb-3';
+            title.style.color = 'var(--accent)';
+            title.textContent = repo.name;
+            card.appendChild(title);
+
+            const desc = document.createElement('p');
+            desc.className = 'opacity-75 flex-grow-1';
+            desc.style.fontSize = '0.95rem';
+            desc.textContent = repo.description || 'No description available.';
+            card.appendChild(desc);
+
+            const stats = document.createElement('div');
+            stats.className = 'repo-stats d-flex gap-3 opacity-50 small mt-auto pt-3';
+            stats.innerHTML = `
+                <span><i class="fas fa-star"></i> <span class="stars"></span></span>
+                <span><i class="fas fa-code-branch"></i> <span class="forks"></span></span>
+                <span><i class="fas fa-code"></i> <span class="lang"></span></span>
             `;
+            stats.querySelector('.stars').textContent = repo.stargazers_count;
+            stats.querySelector('.forks').textContent = repo.forks_count;
+            stats.querySelector('.lang').textContent = repo.language || 'Code';
+            card.appendChild(stats);
+
+            const link = document.createElement('a');
+            link.href = repo.html_url;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.className = 'text-decoration-none mt-3 fw-bold';
+            link.style.color = 'var(--secondary)';
+            link.style.fontSize = '0.85rem';
+            link.style.textTransform = 'uppercase';
+            link.textContent = 'View Source →';
+            card.appendChild(link);
+
+            cardWrapper.appendChild(card);
             grid.appendChild(cardWrapper);
         });
     } catch (error) {
@@ -43,5 +70,13 @@ async function fetchRepos() {
         console.error("GitHub API Error:", error);
     }
 }
+
+window.addEventListener('load', () => {
+    const preloader = document.getElementById('preloader');
+    if(preloader) {
+        preloader.classList.add('hidden');
+        setTimeout(() => preloader.style.display = 'none', 500);
+    }
+});
 
 fetchRepos();
