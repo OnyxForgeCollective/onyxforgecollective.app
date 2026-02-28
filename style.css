@@ -1,79 +1,296 @@
+/* =========================================================
+   OnyxForgeCollective – Theme & Style
+   Dark  = AMOLED black   (#000)
+   Light = Snow-white      (#fff)
+   Auto-detected via prefers-color-scheme
+   ========================================================= */
+
+/* ---------- tokens ---------- */
 :root {
-    --bg: #050507;
-    --card-bg: #0e0e12;
-    --accent: #7a2ff7; /* Agatho Moru */
-    --secondary: #ff007a; /* Neon Pembe */
-    --text: #e0e0e0;
+    /* dark (default) */
+    --bg:        #000000;
+    --surface:   rgba(255,255,255,0.04);
+    --glass:     rgba(255,255,255,0.06);
+    --glass-border: rgba(255,255,255,0.10);
+    --text:      #e4e4e7;
+    --text-muted:#a1a1aa;
+    --accent:    #7a2ff7;
+    --accent-glow: rgba(122,47,247,0.35);
+    --hero-logo: rgba(255,255,255,0.03);
+    --toggler-filter: invert(1);
 }
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg:        #ffffff;
+        --surface:   rgba(0,0,0,0.03);
+        --glass:     rgba(255,255,255,0.55);
+        --glass-border: rgba(0,0,0,0.08);
+        --text:      #18181b;
+        --text-muted:#52525b;
+        --accent:    #6d28d9;
+        --accent-glow: rgba(109,40,217,0.25);
+        --hero-logo: rgba(0,0,0,0.04);
+        --toggler-filter: none;
+    }
+}
+
+/* ---------- base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
 
 body {
     margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
     color: var(--text);
-    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
 
-/* Navbar */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    padding: 25px 5%;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+h1, h2, h3, h4 {
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
 }
 
-.logo { font-weight: 800; letter-spacing: 1px; color: var(--accent); }
-.nav-links { display: flex; list-style: none; gap: 30px; }
-.nav-links a { text-decoration: none; color: white; opacity: 0.7; transition: 0.3s; }
-.nav-links a:hover { opacity: 1; color: var(--secondary); }
+::selection {
+    background: var(--accent);
+    color: #fff;
+}
 
-/* Hero Section */
+/* ---------- glassmorphism utility ---------- */
+.glass-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+/* ---------- navbar ---------- */
+.glass-nav {
+    background: var(--glass);
+    border-bottom: 1px solid var(--glass-border);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    transition: background 0.3s;
+}
+
+.glass-nav .navbar-brand {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 2px;
+    font-size: 1.1rem;
+}
+
+.glass-nav .nav-link {
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: color 0.25s;
+}
+
+.glass-nav .nav-link:hover,
+.glass-nav .nav-link:focus {
+    color: var(--accent);
+}
+
+.glass-nav .navbar-toggler {
+    border: none;
+    padding: 4px 8px;
+}
+
+.glass-nav .navbar-toggler-icon {
+    filter: var(--toggler-filter);
+}
+
+/* ---------- hero ---------- */
 .hero {
+    position: relative;
     display: flex;
     align-items: center;
-    padding: 100px 5%;
-    min-height: 60vh;
-    background: radial-gradient(circle at top right, rgba(122, 47, 247, 0.15), transparent);
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
 }
 
-.hero-content h1 { font-size: 3.5rem; margin: 0; line-height: 1; }
-.hero-content p { max-width: 600px; font-size: 1.1rem; opacity: 0.8; margin: 20px 0; }
+/* giant subtle watermark logo */
+.hero-bg-logo {
+    position: absolute;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(18rem, 30vw, 42rem);
+    color: var(--hero-logo);
+    user-select: none;
+    pointer-events: none;
+    line-height: 1;
+    white-space: nowrap;
+    letter-spacing: -0.04em;
+}
 
-.btn {
+.hero-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.hero-tagline {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.8rem, 5vw, 3.4rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    color: var(--text);
+}
+
+.hero-sub {
+    max-width: 540px;
+    margin: 0 auto 2.5rem;
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+
+.btn-ghost {
     display: inline-block;
-    padding: 12px 35px;
-    background: var(--accent);
-    color: white;
+    padding: 10px 32px;
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 1px;
     text-decoration: none;
-    font-weight: bold;
-    border-radius: 4px;
-    transition: 0.3s;
+    transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
 }
 
-.btn:hover { background: var(--secondary); box-shadow: 0 0 20px rgba(255, 0, 122, 0.4); }
-
-/* Repo Grid */
-.projects-section { padding: 80px 5%; }
-.repo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-    margin-top: 40px;
+.btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 24px var(--accent-glow);
 }
 
+/* ---------- sections ---------- */
+.section-about,
+.section-projects {
+    padding: 6rem 0;
+}
+
+.section-title {
+    font-weight: 600;
+    font-size: 1.6rem;
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.01em;
+}
+
+.about-card {
+    padding: 3rem;
+    max-width: 680px;
+}
+
+.about-card p {
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* ---------- repo cards ---------- */
 .repo-card {
-    background: var(--card-bg);
-    padding: 25px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.05);
-    transition: 0.3s ease;
+    height: 100%;
+    padding: 1.75rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .repo-card:hover {
+    transform: translateY(-6px);
     border-color: var(--accent);
-    transform: translateY(-5px);
+    box-shadow: 0 12px 40px var(--accent-glow);
 }
 
-.repo-card h3 { margin: 0 0 10px 0; color: var(--accent); }
-.repo-card p { font-size: 0.9rem; opacity: 0.7; height: 50px; overflow: hidden; }
-.repo-stats { margin-top: 15px; font-size: 0.8rem; display: flex; gap: 15px; opacity: 0.5; }
+.repo-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.repo-card .repo-desc {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    min-height: 3rem;
+}
+
+.repo-stats {
+    display: flex;
+    gap: 14px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 1rem;
+}
+
+.repo-link {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+.repo-link:hover { opacity: 0.7; }
+
+/* ---------- footer ---------- */
+.site-footer {
+    border-top: 1px solid var(--glass-border);
+    padding: 2rem 0;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.footer-brand {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 1px;
+}
+
+.footer-links a {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    transition: color 0.25s;
+}
+
+.footer-links a:hover { color: var(--accent); }
+
+/* ---------- reveal-on-scroll ---------- */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 768px) {
+    .hero-bg-logo {
+        font-size: clamp(10rem, 45vw, 18rem);
+    }
+
+    .about-card {
+        padding: 2rem 1.25rem;
+    }
+
+    .section-about,
+    .section-projects {
+        padding: 4rem 0;
+    }
+}

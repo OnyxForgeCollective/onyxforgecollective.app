@@ -1,36 +1,89 @@
-const GITHUB_ORG = "prescionx"; // Burayı kendi GitHub organizasyon adınla değiştir
+/* =========================================================
+   OnyxForgeCollective – script.js
+   ========================================================= */
 
+const GITHUB_ORG = "prescionx";
+
+// ---- Fetch & render repos ----
 async function fetchRepos() {
-    const grid = document.getElementById('repo-grid');
-    
+    const grid = document.getElementById("repo-grid");
+
     try {
-        const response = await fetch(`https://api.github.com/users/${GITHUB_ORG}/repos?sort=updated`);
-        const repos = await response.json();
+        const res = await fetch(
+            `https://api.github.com/users/${GITHUB_ORG}/repos?sort=updated`
+        );
+        const repos = await res.json();
 
-        grid.innerHTML = ''; // Loading metnini temizle
+        grid.innerHTML = "";
 
-        repos.forEach(repo => {
-            if (!repo.fork) { // Sadece kendi projelerini göster
-                const card = document.createElement('div');
-                card.className = 'repo-card';
-                
-                card.innerHTML = `
-                    <h3>${repo.name}</h3>
-                    <p>${repo.description || 'No description available.'}</p>
+        repos.forEach((repo) => {
+            if (repo.fork) return;
+
+            const col = document.createElement("div");
+            col.className = "col-sm-6 col-lg-4";
+
+            const desc = repo.description
+                ? escapeHTML(repo.description)
+                : "No description available.";
+
+            col.innerHTML = `
+                <div class="glass-card repo-card reveal">
+                    <h3>${escapeHTML(repo.name)}</h3>
+                    <p class="repo-desc">${desc}</p>
                     <div class="repo-stats">
-                        <span>⭐ ${repo.stargazers_count}</span>
-                        <span>🍴 ${repo.forks_count}</span>
-                        <span>${repo.language || 'Code'}</span>
+                        <span>&#9733; ${repo.stargazers_count}</span>
+                        <span>&#127860; ${repo.forks_count}</span>
+                        <span>${escapeHTML(repo.language || "Code")}</span>
                     </div>
-                    <a href="${repo.html_url}" target="_blank" style="color:white; display:block; margin-top:15px; font-size:0.8rem;">View Source →</a>
-                `;
-                grid.appendChild(card);
-            }
+                    <a class="repo-link" href="${escapeAttr(repo.html_url)}" target="_blank" rel="noopener noreferrer">
+                        View Source &rarr;
+                    </a>
+                </div>`;
+
+            grid.appendChild(col);
         });
-    } catch (error) {
-        grid.innerHTML = '<p>Error loading repositories. Please visit GitHub directly.</p>';
-        console.error("GitHub API Error:", error);
+
+        initReveal();
+    } catch (err) {
+        grid.innerHTML =
+            '<div class="col-12 text-center py-5"><p>Error loading repositories. Please visit GitHub directly.</p></div>';
+        console.error("GitHub API Error:", err);
     }
 }
 
-fetchRepos();
+// ---- Escape helpers ----
+function escapeHTML(str) {
+    const el = document.createElement("span");
+    el.textContent = str;
+    return el.innerHTML;
+}
+
+function escapeAttr(str) {
+    return str.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+}
+
+// ---- Scroll-reveal (IntersectionObserver) ----
+function initReveal() {
+    const els = document.querySelectorAll(".reveal:not(.visible)");
+    if (!els.length) return;
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((e) => {
+                if (e.isIntersecting) {
+                    e.target.classList.add("visible");
+                    observer.unobserve(e.target);
+                }
+            });
+        },
+        { threshold: 0.15 }
+    );
+
+    els.forEach((el) => observer.observe(el));
+}
+
+// ---- Boot ----
+document.addEventListener("DOMContentLoaded", () => {
+    fetchRepos();
+    initReveal();
+});
