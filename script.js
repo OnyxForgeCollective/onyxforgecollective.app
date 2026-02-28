@@ -18,6 +18,8 @@ async function fetchRepos() {
             return;
         }
 
+        const fragment = document.createDocumentFragment();
+
         filteredRepos.forEach(repo => {
             const cardWrapper = document.createElement('div');
             cardWrapper.className = `col-md-6 col-lg-4 custom-fade-in-up`;
@@ -65,6 +67,8 @@ async function fetchRepos() {
             cardWrapper.appendChild(card);
             grid.appendChild(cardWrapper);
         });
+
+        grid.appendChild(fragment);
     } catch (error) {
         grid.innerHTML = '<div class="col-12 text-center"><p class="text-danger">Error loading repositories. Please visit GitHub directly.</p></div>';
         console.error("GitHub API Error:", error);

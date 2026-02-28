@@ -1,0 +1,24 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "Public website files for https://onyxforgecollective.app",
+  "main": "script.js",
+  "scripts": {
+    "test": "mocha script.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OnyxForgeCollective/onyxforgecollective.app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/OnyxForgeCollective/onyxforgecollective.app/issues"
+  },
+  "homepage": "https://github.com/OnyxForgeCollective/onyxforgecollective.app#readme",
+  "devDependencies": {
+    "mocha": "^11.7.5"
+  }
+}
