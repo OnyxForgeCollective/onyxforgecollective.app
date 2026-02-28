@@ -33,7 +33,7 @@ async function fetchRepos() {
                         <span>🍴 ${repo.forks_count}</span>
                         <span>${repo.language || 'Code'}</span>
                     </div>
-                    <a href="${repo.html_url}" target="_blank" class="text-decoration-none mt-3 fw-bold" style="color: var(--secondary); font-size: 0.85rem; text-transform: uppercase;">View Source →</a>
+                    <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="text-decoration-none mt-3 fw-bold" style="color: var(--secondary); font-size: 0.85rem; text-transform: uppercase;">View Source →</a>
                 </div>
             `;
             grid.appendChild(cardWrapper);
@@ -44,4 +44,10 @@ async function fetchRepos() {
     }
 }
 
-fetchRepos();
+if (typeof window !== 'undefined') {
+    fetchRepos();
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { fetchRepos };
+}
