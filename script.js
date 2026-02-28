@@ -26,16 +26,23 @@ async function fetchRepos() {
 
             cardWrapper.innerHTML = `
                 <div class="glass-card h-100 p-4 d-flex flex-column position-relative z-1">
-                    <h3 class="h4 mb-3" style="color: var(--accent);">${repo.name}</h3>
-                    <p class="opacity-75 flex-grow-1" style="font-size: 0.95rem;">${repo.description || 'No description available.'}</p>
+                    <h3 class="h4 mb-3 repo-name" style="color: var(--accent);"></h3>
+                    <p class="opacity-75 flex-grow-1 repo-desc" style="font-size: 0.95rem;"></p>
                     <div class="repo-stats d-flex gap-3 opacity-50 small mt-auto pt-3">
-                        <span>⭐ ${repo.stargazers_count}</span>
-                        <span>🍴 ${repo.forks_count}</span>
-                        <span>${repo.language || 'Code'}</span>
+                        <span class="repo-stars"></span>
+                        <span class="repo-forks"></span>
+                        <span class="repo-lang"></span>
                     </div>
-                    <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="text-decoration-none mt-3 fw-bold" style="color: var(--secondary); font-size: 0.85rem; text-transform: uppercase;">View Source →</a>
+                    <a target="_blank" rel="noopener noreferrer" class="text-decoration-none mt-3 fw-bold repo-link" style="color: var(--secondary); font-size: 0.85rem; text-transform: uppercase;">View Source →</a>
                 </div>
             `;
+
+            cardWrapper.querySelector('.repo-name').textContent = repo.name;
+            cardWrapper.querySelector('.repo-desc').textContent = repo.description || 'No description available.';
+            cardWrapper.querySelector('.repo-stars').textContent = `⭐ ${repo.stargazers_count}`;
+            cardWrapper.querySelector('.repo-forks').textContent = `🍴 ${repo.forks_count}`;
+            cardWrapper.querySelector('.repo-lang').textContent = repo.language || 'Code';
+            cardWrapper.querySelector('.repo-link').href = repo.html_url;
             grid.appendChild(cardWrapper);
         });
     } catch (error) {
