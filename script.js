@@ -18,6 +18,8 @@ async function fetchRepos() {
             return;
         }
 
+        const fragment = document.createDocumentFragment();
+
         filteredRepos.forEach(repo => {
             const cardWrapper = document.createElement('div');
             cardWrapper.className = `col-md-6 col-lg-4 animate__animated animate__fadeInUp`;
@@ -33,11 +35,13 @@ async function fetchRepos() {
                         <span>🍴 ${repo.forks_count}</span>
                         <span>${repo.language || 'Code'}</span>
                     </div>
-                    <a href="${repo.html_url}" target="_blank" class="text-decoration-none mt-3 fw-bold" style="color: var(--secondary); font-size: 0.85rem; text-transform: uppercase;">View Source →</a>
+                    <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="text-decoration-none mt-3 fw-bold" style="color: var(--secondary); font-size: 0.85rem; text-transform: uppercase;">View Source →</a>
                 </div>
             `;
-            grid.appendChild(cardWrapper);
+            fragment.appendChild(cardWrapper);
         });
+
+        grid.appendChild(fragment);
     } catch (error) {
         grid.innerHTML = '<div class="col-12 text-center"><p class="text-danger">Error loading repositories. Please visit GitHub directly.</p></div>';
         console.error("GitHub API Error:", error);
