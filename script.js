@@ -1,10 +1,41 @@
-const GITHUB_ORG = "prescionx"; // Burayı kendi GitHub organizasyon adınla değiştir
+const GITHUB_ORG = "onyxforgecollective";
+const TYPE = "orgs"; // users/orgs
+
+
+window.addEventListener('load', () => {
+
+    if (isDarkMode()) {
+       document.getElementById('hero-logo').src = 'img/svg/ofc-white-logo.svg';
+    }
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        preloader.classList.add('hidden');
+        setTimeout(() => preloader.style.display = 'none', 500);
+    }
+    fetchRepos();
+
+});
+
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    const heroLogo = document.getElementById('hero-logo');
+    if (e.matches) {
+        heroLogo.src = 'img/svg/ofc-white-logo.svg';
+    } else {
+        heroLogo.src = 'img/svg/ofc-black-logo.svg';
+    }
+});
+
+function isDarkMode() {
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+
 
 async function fetchRepos() {
     const grid = document.getElementById('repo-grid');
-    
+
     try {
-        const response = await fetch(`https://api.github.com/users/${GITHUB_ORG}/repos?sort=updated`);
+        const response = await fetch(`https://api.github.com/${TYPE}/${GITHUB_ORG}/repos?sort=updated`);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const repos = await response.json();
 
@@ -65,7 +96,7 @@ async function fetchRepos() {
             card.appendChild(link);
 
             cardWrapper.appendChild(card);
-            grid.appendChild(cardWrapper);
+            fragment.appendChild(cardWrapper);
         });
 
         grid.appendChild(fragment);
@@ -75,12 +106,3 @@ async function fetchRepos() {
     }
 }
 
-window.addEventListener('load', () => {
-    const preloader = document.getElementById('preloader');
-    if(preloader) {
-        preloader.classList.add('hidden');
-        setTimeout(() => preloader.style.display = 'none', 500);
-    }
-});
-
-fetchRepos();

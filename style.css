@@ -26,6 +26,11 @@
         --glass-bg: rgba(5, 5, 7, 0.6);
         --logo-silent: rgba(255, 255, 255, 0.02);
     }
+    
+    .hero-svg {
+        filter: brightness(0.9);
+    }
+
 }
 
 body {
@@ -48,7 +53,7 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 30vw;
+    font-size: 15vw;
     font-weight: 800;
     color: var(--logo-silent);
     z-index: 0;
@@ -72,6 +77,16 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
     align-items: center;
     transition: opacity 0.5s ease;
 }
+.preloader-content {
+    text-align: center;
+    color: var(--text);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
 
 .preloader.hidden {
     opacity: 0;
@@ -79,16 +94,30 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
 }
 
 .spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid var(--glass-border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+    width: 200px;
+    height: 4px;
+    background: var(--glass-border);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
 }
 
-@keyframes spin {
-    100% { transform: rotate(360deg); }
+.spinner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    animation: slide 1.5s ease-in-out infinite;
+}
+
+@keyframes slide {
+    0% { left: -50%; }
+    50% { left: 100%; }
+    100% { left: -50%; }
 }
 
 /* Custom Fonts */
@@ -232,6 +261,7 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
     display: flex;
     justify-content: center;
     align-items: center;
+    filter: drop-shadow(0 0 5px rgba(124, 47, 247, 0.808));
 }
 
 .hero-svg {
@@ -242,9 +272,10 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
 
 /* Media Queries for Responsiveness */
 @media (max-width: 991px) {
-    .bg-logo-silent { font-size: 40vw; }
+    .bg-logo-silent { font-size: 15vw; }
     .hero-content { text-align: center; }
     .btn-custom { margin-top: 20px; }
+    
 }
 
 @media (max-width: 768px) {
