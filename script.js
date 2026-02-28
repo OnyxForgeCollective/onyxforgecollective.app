@@ -44,4 +44,10 @@ async function fetchRepos() {
     }
 }
 
-fetchRepos();
+if (typeof window !== 'undefined') {
+    fetchRepos();
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { fetchRepos };
+}
