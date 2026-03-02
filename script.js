@@ -42,16 +42,14 @@ async function fetchRepos() {
         grid.innerHTML = ''; // Clear loading spinner
 
         let delay = 0;
-        const filteredRepos = repos.filter(repo => !repo.fork);
-
-        if (filteredRepos.length === 0) {
+        if (repos.length === 0) {
             grid.innerHTML = '<div class="col-12 text-center"><p class="lead">No public repositories found.</p></div>';
             return;
         }
 
         const fragment = document.createDocumentFragment();
 
-        filteredRepos.forEach(repo => {
+        repos.forEach(repo => {
             const cardWrapper = document.createElement('div');
             cardWrapper.className = `col-md-6 col-lg-4 custom-fade-in-up`;
             cardWrapper.style.animationDelay = `${delay}s`;
