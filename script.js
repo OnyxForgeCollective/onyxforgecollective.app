@@ -4,14 +4,12 @@ const TYPE = "orgs"; // users/orgs
 // ─── Taglines ────────────────────────────────────────────────────────────────
 const TAGLINES = [
     "Code.\nForge.\nShip.",
-    "Build.\nBreak.\nGrow.",
-    "Hack.\nCraft.\nLead.",
-    "Open.\nBold.\nFree.",
-    "Push.\nForge.\nRise.",
+    "Pull.\nPush.\nSync.",
     "Make.\nShare.\nImpact.",
-    "Fork.\nSpark.\nDeploy.",
+    "Fork.\nTest.\nDeploy.",
     "Draft.\nTest.\nLaunch.",
     "Think.\nCode.\nForge.",
+    "Onyx.\nForge.\nCollective.",
 ];
 
 // ─── Theme ────────────────────────────────────────────────────────────────────
